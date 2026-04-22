@@ -24,9 +24,15 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Hivon — An Editorial for Modern Thought",
+  title: {
+    default: "Hivon · Blog",
+    template: "%s — Hivon",
+  },
   description:
-    "A minimalist blogging platform where writers, readers and AI meet. Built for Hivon Automations.",
+    "A small, opinionated journal. Writers publish, readers comment, and every piece comes with a two-hundred-word abstract.",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({
