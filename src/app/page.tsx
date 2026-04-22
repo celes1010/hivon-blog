@@ -59,7 +59,7 @@ export default function Home() {
             scale: { duration: 1.4, ease: [0.2, 0.8, 0.2, 1], delay: 0.2 },
             rotate: { duration: 40, ease: "linear", repeat: Infinity },
           }}
-          className="pointer-events-none absolute -right-40 top-32 h-[520px] w-[520px] rounded-full bg-accent opacity-80 blur-[2px] hidden md:block"
+          className="pointer-events-none absolute -right-32 -top-20 h-[280px] w-[280px] md:-right-40 md:top-32 md:h-[520px] md:w-[520px] rounded-full bg-accent opacity-60 md:opacity-80 blur-[2px]"
         />
         <motion.div
           initial={{ scale: 0, y: 40 }}
@@ -68,7 +68,7 @@ export default function Home() {
             scale: { duration: 1, delay: 1.2 },
             y: { duration: 5, ease: "easeInOut", repeat: Infinity, delay: 2 },
           }}
-          className="pointer-events-none absolute left-10 bottom-32 h-40 w-40 rounded-full bg-accent-lime opacity-90 hidden md:block"
+          className="pointer-events-none absolute -left-10 bottom-64 h-24 w-24 md:left-10 md:bottom-32 md:h-40 md:w-40 rounded-full bg-accent-lime opacity-80 md:opacity-90"
         />
         {/* Small floating accent dot */}
         <motion.div
@@ -78,7 +78,7 @@ export default function Home() {
             scale: { duration: 0.8, delay: 1.5 },
             y: { duration: 4, ease: "easeInOut", repeat: Infinity },
           }}
-          className="pointer-events-none absolute right-[20%] top-[45%] h-6 w-6 rounded-full bg-ink hidden md:block"
+          className="pointer-events-none absolute right-8 top-[30%] h-4 w-4 md:right-[20%] md:top-[45%] md:h-6 md:w-6 rounded-full bg-ink"
         />
         <motion.div
           style={{ y: heroY, scale: heroScale, opacity: heroOpacity }}

@@ -153,33 +153,89 @@ export default function Navbar() {
       </nav>
 
       {open && (
-        <div className="border-t border-ink/10 px-6 py-4 md:hidden">
-          <div className="flex flex-col gap-3">
+        <div className="border-t border-ink/10 bg-paper px-6 py-6 md:hidden">
+          {/* Profile card on top if signed in */}
+          {email && (
+            <div className="mb-6 flex items-center gap-3 border-b border-ink/10 pb-5">
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-ink text-paper font-display text-lg">
+                {initial}
+              </div>
+              <div className="flex flex-col leading-tight">
+                <span className="text-base text-ink">{displayName}</span>
+                {role && (
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-ink/50">
+                    {role}
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+
+          <div className="flex flex-col gap-1">
             {isLandingPage && (
-              <Link href="/#about" onClick={() => setOpen(false)}>About</Link>
+              <Link
+                href="/#about"
+                onClick={() => setOpen(false)}
+                className="border-b border-ink/5 py-3 text-lg hover:text-accent"
+              >
+                About
+              </Link>
             )}
             {email && role !== "admin" && (
-              <Link href="/posts" onClick={() => setOpen(false)}>Articles</Link>
+              <Link
+                href="/posts"
+                onClick={() => setOpen(false)}
+                className="border-b border-ink/5 py-3 text-lg hover:text-accent"
+              >
+                Articles
+              </Link>
             )}
             {email && (role === "author" || role === "admin") && (
-              <Link href="/posts/new" onClick={() => setOpen(false)}>Write</Link>
+              <Link
+                href="/posts/new"
+                onClick={() => setOpen(false)}
+                className="border-b border-ink/5 py-3 text-lg hover:text-accent"
+              >
+                Write
+              </Link>
             )}
             {role === "admin" && (
               <Link
                 href="/admin"
                 onClick={() => setOpen(false)}
-                className="font-mono text-xs uppercase tracking-widest text-accent"
+                className="border-b border-ink/5 py-3 font-mono text-sm uppercase tracking-widest text-accent"
               >
                 Admin
               </Link>
             )}
+          </div>
+
+          {/* Auth actions pinned at bottom */}
+          <div className="mt-6">
             {email ? (
-              <button onClick={signOut} className="text-left">Sign out</button>
+              <button
+                onClick={signOut}
+                className="w-full border border-ink py-3 text-sm uppercase tracking-widest hover:bg-ink hover:text-paper transition-colors"
+              >
+                Sign out
+              </button>
             ) : (
-              <>
-                <Link href="/login">Sign in</Link>
-                <Link href="/signup">Join</Link>
-              </>
+              <div className="flex flex-col gap-2">
+                <Link
+                  href="/login"
+                  onClick={() => setOpen(false)}
+                  className="w-full border border-ink py-3 text-center text-sm uppercase tracking-widest hover:bg-ink hover:text-paper transition-colors"
+                >
+                  Sign in
+                </Link>
+                <Link
+                  href="/signup"
+                  onClick={() => setOpen(false)}
+                  className="w-full bg-ink py-3 text-center text-sm uppercase tracking-widest text-paper hover:bg-accent transition-colors"
+                >
+                  Join
+                </Link>
+              </div>
             )}
           </div>
         </div>
