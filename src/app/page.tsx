@@ -68,7 +68,7 @@ export default function Home() {
             scale: { duration: 1, delay: 1.2 },
             y: { duration: 5, ease: "easeInOut", repeat: Infinity, delay: 2 },
           }}
-          className="pointer-events-none absolute left-10 bottom-10 h-40 w-40 rounded-full bg-accent-lime opacity-90 hidden md:block"
+          className="pointer-events-none absolute left-10 bottom-32 h-40 w-40 rounded-full bg-accent-lime opacity-90 hidden md:block"
         />
         {/* Small floating accent dot */}
         <motion.div
@@ -82,7 +82,7 @@ export default function Home() {
         />
         <motion.div
           style={{ y: heroY, scale: heroScale, opacity: heroOpacity }}
-          className="relative mx-auto max-w-[1400px] px-6 pt-24 md:px-10 md:pt-36"
+          className="relative mx-auto max-w-[1400px] px-6 pt-24 pb-32 md:px-10 md:pt-36 md:pb-20"
         >
           {/* Top meta bar */}
           <div className="flex items-center justify-between font-mono text-xs uppercase tracking-widest text-ink/60">
@@ -140,8 +140,25 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mt-16 grid grid-cols-12 gap-6">
-            <div className="col-span-12 md:col-span-5 md:col-start-1">
+          {/* ===== BOTTOM BLOCK — paragraph + CTA + scroll cue, all aligned, no overlap ===== */}
+          <div className="mt-16 grid grid-cols-12 gap-6 items-end">
+            {/* Scroll cue on the far left, aligned with baseline */}
+            <div className="col-span-12 md:col-span-2 hidden md:flex items-end">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.5 }}
+                className="flex items-center gap-3"
+              >
+                <span className="font-mono text-xs uppercase tracking-widest text-ink/60">
+                  Scroll
+                </span>
+                <div className="h-[1px] w-10 bg-ink animate-pulse-slow" />
+              </motion.div>
+            </div>
+
+            {/* Paragraph in the middle, with its own safe column */}
+            <div className="col-span-12 md:col-span-6">
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -155,7 +172,8 @@ export default function Home() {
               </motion.p>
             </div>
 
-            <div className="col-span-12 md:col-span-4 md:col-start-9 flex md:justify-end items-end">
+            {/* CTAs on the right */}
+            <div className="col-span-12 md:col-span-4 flex md:justify-end items-end">
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -178,19 +196,6 @@ export default function Home() {
               </motion.div>
             </div>
           </div>
-
-          {/* Scroll cue */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5 }}
-            className="absolute bottom-10 left-6 flex items-center gap-3 md:left-10"
-          >
-            <div className="h-[1px] w-16 bg-ink animate-pulse-slow" />
-            <span className="font-mono text-xs uppercase tracking-widest text-ink/60">
-              Scroll
-            </span>
-          </motion.div>
         </motion.div>
       </section>
 
@@ -237,7 +242,7 @@ export default function Home() {
               <p className="reveal mt-12 max-w-2xl text-lg leading-relaxed text-ink/70">
                 We live in an attention economy that pretends length is a virtue.
                 Hivon disagrees. Authors write freely; the platform, powered by
-                Google's Gemini 2.5 model, generates a calm, ~200-word abstract the moment a piece is
+                Google&apos;s Gemini 2.5 model, generates a calm, ~200-word abstract the moment a piece is
                 published. Readers get the gist in seconds and
                 commit only when earned.
               </p>
@@ -304,8 +309,8 @@ export default function Home() {
             § 04 — A note on machines
           </div>
           <blockquote className="reveal display text-4xl md:text-6xl leading-[1.05]">
-            "The summary is never the story.{" "}
-            <span className="italic-serif text-accent">It's the door.</span>"
+            &ldquo;The summary is never the story.{" "}
+            <span className="italic-serif text-accent">It&apos;s the door.&rdquo;</span>
           </blockquote>
           <p className="reveal mt-10 font-mono text-xs uppercase tracking-widest text-ink/50">
             — Hivon

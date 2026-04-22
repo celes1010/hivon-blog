@@ -51,21 +51,37 @@ export default function Navbar() {
     router.refresh();
   }
 
+  // Get first name / initial
+  const displayName = name?.split(" ")[0] ?? email?.split("@")[0] ?? "";
+  const initial = (name?.[0] ?? email?.[0] ?? "?").toUpperCase();
+
   return (
-    <header className="sticky top-0 z-40 border-b border-ink/10 bg-paper/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-ink/10 bg-paper/85 backdrop-blur-xl">
       <nav className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-4 md:px-10">
-        <Link href="/" className="group flex items-center gap-2.5">
-          <div className="flex h-7 w-7 items-center justify-center bg-ink text-paper font-display text-sm">
-            H
-          </div>
-          <span className="font-display text-xl tracking-tight">Hivon</span>
-          <span className="italic-serif text-xs text-ink/50">/ journal</span>
+        {/* ===== LOGO — "hivon · blog" wordmark ===== */}
+        <Link href="/" className="group flex items-baseline gap-2">
+          <span className="font-display text-2xl tracking-tight leading-none">
+            hivon
+          </span>
+          <span className="text-ink/30 leading-none">·</span>
+          <span className="italic-serif text-ink/60 text-lg leading-none group-hover:text-accent transition-colors">
+            blog
+          </span>
         </Link>
 
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-6 md:flex">
           {isLandingPage && (
             <Link href="/#about" className="text-sm hover:text-accent transition-colors">
               About
+            </Link>
+          )}
+
+          {email && role !== "admin" && (
+            <Link
+              href="/posts"
+              className="text-sm hover:text-accent transition-colors"
+            >
+              Articles
             </Link>
           )}
 
@@ -81,33 +97,31 @@ export default function Navbar() {
           {role === "admin" && (
             <Link
               href="/admin"
-              className="font-mono text-xs uppercase tracking-widest text-red-600 hover:text-red-800 transition-colors"
+              className="font-mono text-[11px] uppercase tracking-widest text-accent hover:opacity-70 transition-opacity"
             >
-              [ Admin ]
+              Admin
             </Link>
           )}
 
           {email ? (
             <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2 border border-ink/15 bg-paper-warm px-3 py-1.5">
-                <span className="text-sm text-ink">{name ?? email}</span>
-                {role && (
-                  <span
-                    className={
-                      role === "admin"
-                        ? "font-mono text-[9px] uppercase tracking-widest text-red-600 border border-red-600 px-1.5 py-0.5"
-                        : role === "author"
-                        ? "font-mono text-[9px] uppercase tracking-widest text-ink border border-ink px-1.5 py-0.5"
-                        : "font-mono text-[9px] uppercase tracking-widest text-ink/50 border border-ink/30 px-1.5 py-0.5"
-                    }
-                  >
-                    {role}
-                  </span>
-                )}
+              {/* ===== Clean profile pill with avatar initial ===== */}
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-ink text-paper font-display text-sm">
+                  {initial}
+                </div>
+                <div className="flex flex-col leading-tight">
+                  <span className="text-sm text-ink">{displayName}</span>
+                  {role && (
+                    <span className="font-mono text-[9px] uppercase tracking-widest text-ink/50">
+                      {role}
+                    </span>
+                  )}
+                </div>
               </div>
               <button
                 onClick={signOut}
-                className="border border-ink px-4 py-2 text-xs uppercase tracking-wider hover:bg-ink hover:text-paper transition-colors"
+                className="text-xs uppercase tracking-wider text-ink/60 hover:text-accent transition-colors"
               >
                 Sign out
               </button>
@@ -144,6 +158,9 @@ export default function Navbar() {
             {isLandingPage && (
               <Link href="/#about" onClick={() => setOpen(false)}>About</Link>
             )}
+            {email && role !== "admin" && (
+              <Link href="/posts" onClick={() => setOpen(false)}>Articles</Link>
+            )}
             {email && (role === "author" || role === "admin") && (
               <Link href="/posts/new" onClick={() => setOpen(false)}>Write</Link>
             )}
@@ -151,9 +168,9 @@ export default function Navbar() {
               <Link
                 href="/admin"
                 onClick={() => setOpen(false)}
-                className="font-mono text-xs uppercase tracking-widest text-red-600"
+                className="font-mono text-xs uppercase tracking-widest text-accent"
               >
-                [ Admin ]
+                Admin
               </Link>
             )}
             {email ? (

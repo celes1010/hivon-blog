@@ -18,16 +18,31 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
-    setLoading(false);
     if (error) {
+      setLoading(false);
       setError(error.message);
       return;
     }
-    router.push("/posts");
+
+    // Check role — admins go to the dashboard, everyone else to /posts
+    let destination = "/posts";
+    if (data.user) {
+      const { data: profile } = await supabase
+        .from("users")
+        .select("role")
+        .eq("id", data.user.id)
+        .single();
+      if (profile?.role === "admin") {
+        destination = "/admin";
+      }
+    }
+
+    setLoading(false);
+    router.push(destination);
     router.refresh();
   }
 
@@ -36,28 +51,62 @@ export default function LoginPage() {
       <Navbar />
       <main className="min-h-[90vh] bg-paper noise">
         <div className="mx-auto grid min-h-[85vh] max-w-[1400px] grid-cols-1 md:grid-cols-2">
-          {/* Left — editorial */}
-          <div className="relative hidden border-r border-ink/10 bg-paper-warm p-10 md:flex md:flex-col md:justify-between">
-            <div className="font-mono text-xs uppercase tracking-widest text-ink/50">
-              § Sign in
+          {/* ===== LEFT — editorial, now with actual character ===== */}
+          <div className="relative hidden overflow-hidden border-r border-ink/10 bg-ink text-paper p-12 md:flex md:flex-col md:justify-between noise">
+            {/* Decorative floating shape */}
+            <div className="pointer-events-none absolute -right-20 top-1/3 h-64 w-64 rounded-full bg-accent opacity-90 blur-[1px]" />
+            <div className="pointer-events-none absolute left-10 bottom-1/3 h-3 w-3 rounded-full bg-accent-lime" />
+
+            {/* Decorative grid */}
+            <div
+              className="pointer-events-none absolute inset-0 opacity-[0.06]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(to right, #fafaf7 1px, transparent 1px), linear-gradient(to bottom, #fafaf7 1px, transparent 1px)",
+                backgroundSize: "60px 60px",
+              }}
+            />
+
+            {/* Top */}
+            <div className="relative flex items-center justify-between">
+              <div className="font-mono text-xs uppercase tracking-widest text-paper/50">
+                § Sign in
+              </div>
+              <div className="font-mono text-xs text-paper/40">No. 01</div>
             </div>
-            <div>
-              <h1 className="display text-6xl leading-none">
+
+            {/* Middle — big typography */}
+            <div className="relative">
+              <h1 className="display text-7xl leading-[0.9]">
                 Welcome
                 <br />
                 <span className="italic-serif text-accent">back.</span>
               </h1>
-              <p className="mt-8 max-w-sm text-ink/70">
+              <p className="mt-8 max-w-sm text-paper/70 leading-relaxed">
                 Pick up where you left off — your drafts, your comments, your
                 unfinished thoughts are exactly where you parked them.
               </p>
+
+              {/* Quote */}
+              <blockquote className="mt-10 max-w-sm border-l-2 border-accent pl-5">
+                <p className="italic-serif text-xl leading-snug text-paper/85">
+                  &ldquo;The summary is never the story.{" "}
+                  <span className="text-accent">It&apos;s the door.&rdquo;</span>
+                </p>
+                <footer className="mt-2 font-mono text-[10px] uppercase tracking-widest text-paper/40">
+                  — Hivon
+                </footer>
+              </blockquote>
             </div>
-            <div className="font-mono text-xs text-ink/40">
-              Hivon Journal / Vol. 01
+
+            {/* Bottom meta */}
+            <div className="relative flex items-center justify-between font-mono text-xs text-paper/40">
+              <span>Hivon Journal / Vol. 01</span>
+              <span>2026</span>
             </div>
           </div>
 
-          {/* Right — form */}
+          {/* ===== RIGHT — form ===== */}
           <div className="flex items-center justify-center p-10">
             <form onSubmit={handleSubmit} className="w-full max-w-sm">
               <div className="font-mono text-xs uppercase tracking-widest text-ink/50 mb-4 md:hidden">
